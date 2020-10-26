@@ -93,4 +93,18 @@ describe("Catalogue", () => {
         expect(rejectedProduct).to.be.undefined; 
       });
     });
+    describe("search", function () {
+      it("should return products cheaper than €25.01", function () {
+          const result = cat.search({ price: 25.00});
+          expect(result.productIds).to.have.lengthOf(3);
+          expect(result.productIds).to.have.members(["A123", "A124", "A125"]);
+      });
+      it("should return products with 'sho' in the name (e.g. shoes, shoulder bag).", function () {
+          const result = cat.search({ keyword: 'sho' });
+          expect(result.productIds).to.have.lengthOf(0);
+      });
+      it("should throw'Bad search'if the criteria object has neither key ",function(){
+          expect(() => cat.search({name:"name"})).to.throw("Bad search");
+      })
+  });
 });
